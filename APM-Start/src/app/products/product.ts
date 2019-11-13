@@ -1,3 +1,5 @@
+import { ProductCategory } from '../product-categories/product-category';
+
 /* Defines the product entity */
 export interface Product {
   id: number;
@@ -6,6 +8,7 @@ export interface Product {
   description?: string;
   price?: number;
   categoryId?: number;
+  category?: string;
   quantityInStock?: number;
   searchKey?: string[];
   supplierIds?: number[];
