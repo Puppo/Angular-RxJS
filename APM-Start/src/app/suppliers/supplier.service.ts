@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { throwError } from 'rxjs';
+import { throwError, of } from 'rxjs';
+import { concatMap, mergeMap, switchMap, shareReplay, catchError } from 'rxjs/operators';
+import { Supplier } from './supplier';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +11,13 @@ import { throwError } from 'rxjs';
 export class SupplierService {
   suppliersUrl = 'api/suppliers';
 
-  constructor(private http: HttpClient) { }
+  suppliers$ = this.http.get<Supplier[]>(`${this.suppliersUrl}`)
+  .pipe(
+    shareReplay(1),
+    catchError(this.handleError)
+  );
+
+  constructor(private http: HttpClient) {}
 
   private handleError(err: any) {
     // in a real world app, we may send the server to some remote logging infrastructure
